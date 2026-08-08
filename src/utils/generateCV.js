@@ -58,7 +58,7 @@ export const generateAndDownloadCV = () => {
     // First print the bullet prefix (- or •)
     doc.text(prefix, x, y);
     let curX = x + 4;
-    let lineStartY = y;
+  
 
     parts.forEach((part) => {
       if (!part) return;

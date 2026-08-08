@@ -11,7 +11,6 @@ import {
   FiTerminal,
   FiBox,
   FiExternalLink,
-  FiFileText
 } from "react-icons/fi";
 
 const portfolioStack = [
