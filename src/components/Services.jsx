@@ -1,151 +1,233 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { FiLayout, FiCode } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiCode, FiLayout, FiCheckCircle, FiServer } from "react-icons/fi";
 import { FaMobileAlt } from "react-icons/fa";
 
-const containerVariant = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const cardVariant = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
 export default function Services() {
+  const [isPaused, setIsPaused] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  // Dynamic card count per screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setVisibleCount(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const [cards, setCards] = useState([
+    {
+      id: "card-1",
+      icon: <FiCode className="text-[2.8rem] text-[var(--main-color)] mx-auto" />,
+      title: "Web Development",
+      desc: "Building fast, scalable, and responsive web apps using React & Next.js.",
+      tags: ["React.js", "Next.js", "Redux", "Tailwind CSS"],
+      features: [
+        "Single Page Applications (SPAs)",
+        "Server-Side Rendering (SSR)",
+        "State & API Integration",
+        "Performance Tuning",
+      ],
+    },
+    {
+      id: "card-2",
+      icon: <FiLayout className="text-[2.8rem] text-[var(--main-color)] mx-auto" />,
+      title: "UI/UX Designing",
+      desc: "Crafting clean, intuitive user experiences with modern design systems.",
+      tags: ["Figma", "Tailwind CSS", "Material UI"],
+      features: [
+        "Interactive Wireframes",
+        "Component Libraries",
+        "Responsive Grid Layouts",
+        "User-Centered UI",
+      ],
+    },
+    {
+      id: "card-3",
+      icon: <FaMobileAlt className="text-[2.8rem] text-[var(--main-color)] mx-auto" />,
+      title: "Mobile App Development",
+      desc: "Developing cross-platform mobile apps for Android & iOS.",
+      tags: ["React Native", "JavaScript", "REST APIs"],
+      features: [
+        "iOS & Android Native Apps",
+        "Smooth Animations",
+        "Offline Storage Sync",
+        "Clean Mobile Architecture",
+      ],
+    },
+    {
+      id: "card-4",
+      icon: <FiServer className="text-[2.8rem] text-[var(--main-color)] mx-auto" />,
+      title: "API & Backend Integration",
+      desc: "Building robust backend services, RESTful APIs, and databases.",
+      tags: ["Node.js", "Express.js", "MongoDB", "REST APIs"],
+      features: [
+        "RESTful API Design",
+        "Authentication & Security",
+        "Database Architecture",
+        "Server Business Logic",
+      ],
+    },
+  ]);
+
+  // Rotational Loop
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      setCards((prevCards) => {
+        const [firstCard, ...restCards] = prevCards;
+        return [...restCards, firstCard];
+      });
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   return (
     <section
       id="services"
-      className="my-10 px-10 py-[5rem] bg-[#081b29] text-[#ededed]"
+      className="py-[6rem] px-6 sm:px-12 md:px-16 lg:px-20 bg-[#081b29] text-[#ededed] relative overflow-hidden w-full flex justify-center"
     >
-      {/* Heading */}
-      <motion.h2
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="text-[3rem] sm:text-[4rem] md:text-[5rem] text-center mb-[4rem] md:mb-[5rem]"
-      >
-        My <span className="text-[#00abf0]">Services</span>
-      </motion.h2>
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-[var(--main-color)] opacity-5 blur-[10rem] pointer-events-none rounded-full" />
 
-      {/* Container */}
-      <motion.div
-        variants={containerVariant}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="flex flex-wrap justify-center gap-[2rem] md:gap-[4rem]"
-      >
-        {/* BOX 1 */}
-        <ServiceCard
-          icon={<FiCode size={35} className="text-[#00abf0] mx-auto" />}
-          title="Web Development"
-          desc="Developed responsive UI using React & Next.js"
-        />
+      <div className="w-full max-w-[125rem] mx-auto relative z-10 flex flex-col justify-center">
+        {/* Heading */}
+        <motion.h2
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-[3rem] sm:text-[4rem] lg:text-[4.8rem] text-center mb-[1rem] font-bold"
+        >
+          My <span className="text-[var(--main-color)]">Services</span>
+        </motion.h2>
 
-        {/* BOX 2 */}
-        <ServiceCard
-          icon={<FiLayout size={35} className="text-[#00abf0] mx-auto" />}
-          title="UI/UX Designing"
-          desc="I create modern, user-friendly interfaces using Figma & Tailwind CSS."
-        />
+        <p className="text-[1.3rem] sm:text-[1.5rem] lg:text-[1.6rem] text-center text-[#ededed]/70 mb-[3.5rem] max-w-[55rem] mx-auto">
+          High-performance solutions tailored to turn complex ideas into seamless digital experiences.
+        </p>
 
-        {/* BOX 3 */}
-        <ServiceCard
-          icon={<FaMobileAlt size={35} className="text-[#00abf0] mx-auto" />}
-          title="Mobile App Development"
-          desc="Cross-platform apps using React Native and Kotlin."
-        />
-      </motion.div>
+        {/* Rotational Container */}
+        <div
+          className="relative w-full overflow-hidden py-2"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="flex gap-6">
+            <AnimatePresence mode="popLayout">
+              {cards.slice(0, visibleCount).map((service) => (
+                <motion.div
+                  key={service.id}
+                  layout
+                  initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                  className="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] flex-shrink-0"
+                >
+                  <ServiceCard {...service} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Dynamic Glowing Indicator Dots */}
+        <div className="flex justify-center items-center gap-3 mt-[3rem]">
+          {["card-1", "card-2", "card-3", "card-4"].map((cardId) => {
+            const isActive = cards[0].id === cardId;
+            return (
+              <span
+                key={cardId}
+                className={`h-[0.8rem] rounded-full transition-all duration-500 ${
+                  isActive
+                    ? "w-[2.5rem] bg-[var(--main-color)] shadow-[0_0_10px_var(--main-color)]"
+                    : "w-[0.8rem] bg-[#ededed]/20"
+                }`}
+              />
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }
 
-/* CARD COMPONENT */
-function ServiceCard({ icon, title, desc }) {
+/* COMPACT SERVICE CARD */
+function ServiceCard({ icon, title, desc, tags, features }) {
   return (
-    <motion.div
-      variants={cardVariant}
-      whileHover={{
-        scale: 1.07,
-        boxShadow: "0px 10px 30px rgba(0,171,240,0.25)",
-      }}
-      className="flex-1 min-w-[280px] max-w-[350px] bg-[#112e42] p-[3rem_2rem] md:p-[5rem_2rem] rounded-[2rem] text-center border border-[#ededed] hover:border-[#00abf0] transition-all duration-300"
-    >
-      {icon}
+    <div className="h-full flex flex-col justify-between bg-[#112e42]/80 backdrop-blur-md p-6 sm:p-8 rounded-[1.5rem] border border-[#ededed]/10 hover:border-[var(--main-color)] transition-all duration-300 relative shadow-xl">
+      <div>
+        {/* Icon */}
+        <div className="w-[5rem] h-[5rem] mx-auto mb-4 flex items-center justify-center rounded-xl bg-[var(--main-color)]/10 border border-[var(--main-color)]/30">
+          {icon}
+        </div>
 
-      <h3 className="text-[2.5rem] md:text-[3rem] my-[1rem]">{title}</h3>
+        <h3 className="text-[1.8rem] sm:text-[2rem] mb-2 font-semibold text-center hover:text-[var(--main-color)] transition-colors duration-300">
+          {title}
+        </h3>
 
-      <p className="text-[1.4rem] md:text-[1.6rem] pb-[20px]">{desc}</p>
+        <p className="text-[1.2rem] text-[#ededed]/80 text-center mb-4 leading-relaxed">
+          {desc}
+        </p>
 
-      <ServiceButton />
-    </motion.div>
+        {/* What I Deliver */}
+        <div className="border-t border-[#ededed]/10 pt-4 mb-4">
+          <p className="text-[1.1rem] uppercase tracking-wider text-[var(--main-color)] font-bold mb-2">
+            What I Deliver:
+          </p>
+          <ul className="space-y-1.5">
+            {features.map((feature, idx) => (
+              <li key={idx} className="flex items-center text-[1.2rem] text-[#ededed]/90 gap-2">
+                <FiCheckCircle className="text-[var(--main-color)] shrink-0 text-[1.2rem]" />
+                <span className="truncate">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Tech Badges */}
+        <div className="flex flex-wrap gap-1.5 mb-6 justify-center">
+          {tags.map((tag, idx) => (
+            <span
+              key={idx}
+              className="text-[1rem] px-2.5 py-0.5 bg-[#081b29] text-[var(--main-color)] border border-[var(--main-color)]/30 rounded-full font-medium"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Button */}
+      <div className="text-center mt-auto">
+        <ServiceButton />
+      </div>
+    </div>
   );
 }
 
 /* BUTTON COMPONENT */
 function ServiceButton() {
   return (
-    <div className="inline-block w-[15rem] h-[5rem]">
-     <button
-        type="button"
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "1.8rem",
-          fontWeight: 600,
-          letterSpacing: "0.1rem",
-          color: "#081b29",
-          background: "#00abf0",
-          border: "0.2rem solid #00abf0",
-          borderRadius: "0.8rem",
-          position: "relative",
-          overflow: "hidden",
-          zIndex: 1,
-          transition: "all 0.5s ease",
-          cursor: "pointer",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.color = "#00abf0";
-          e.currentTarget.querySelector("span").style.width = "100%";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.color = "#081b29";
-          e.currentTarget.querySelector("span").style.width = "0";
-        }}
+    <div className="inline-block w-full h-[4.2rem]">
+      <a
+        href="#contact"
+        className="group relative flex justify-center items-center w-full h-full text-[1.4rem] font-semibold tracking-wider text-[#081b29] bg-[var(--main-color)] border-[0.2rem] border-[var(--main-color)] rounded-[0.8rem] overflow-hidden z-10 transition-colors duration-500 hover:text-[var(--main-color)] cursor-pointer"
       >
-        Read More
-
-        <span
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: 0,
-            height: "100%",
-            background: "#081b29",
-            zIndex: -1,
-            transition: "width 0.5s ease",
-          }}
-        />
-      </button>
+        Get Started
+        <span className="absolute top-0 left-0 w-0 h-full bg-[#081b29] -z-10 transition-all duration-500 group-hover:w-full" />
+      </a>
     </div>
   );
 }

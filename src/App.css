@@ -1,36 +1,49 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700;800;900& display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
-/* * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-decoration: none;
-  border: none;
-  outline: none;
-  scroll-behavior: smooth;
-  font-family: 'poppines', sans-serif;
-} */
-
-/* Define colors */
 :root {
-  --third-bg-color: rgba(14, 149, 245, 0.3);
   --bg-color: #081b29;
   --second-bg-color: #112e42;
   --text-color: #ededed;
-  --four-bg-color: rgba(14, 149, 245, 0.4);
-  --main-color: #00abf0;
+  /* Default Primary Color */
+  --main-color: #00abf0; 
 }
 
+/* ==========================================
+   RESPONSIVE ROOT FONT-SIZE FOR BIG SCREENS
+   ========================================== */
 
-
+/* Base: Laptop/Mobile (1rem = 10px) */
 html {
   font-size: 62.5%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Laptops / Desktops (1440px - 1799px) -> 1rem = 11.2px */
+@media (min-width: 1440px) {
+  html {
+    font-size: 70%;
+  }
+}
+
+/* Full HD Monitors (1800px - 2200px) -> 1rem = 12.8px */
+@media (min-width: 1800px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+/* 2K / 4K Ultra Wide Monitors (2200px +) -> 1rem = 14.4px */
+@media (min-width: 2200px) {
+  html {
+    font-size: 90%;
+  }
 }
 
 body {
   background: var(--bg-color);
   color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -41,5 +54,3 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-

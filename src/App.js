@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { TiArrowUpOutline } from "react-icons/ti";
-import './App.css';
+import "./App.css";
+
+// Components
 import Header from "./components/Header";
 import Home from "./components/Home";
 import About from "./components/About";
@@ -10,18 +12,46 @@ import Portfolio from "./components/Portfolio";
 import Education from "./components/Education";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
-import Testimonials from "./components/Testimonials";
+import VersionBadge from "./components/VersionBadge/VersionBadge";
+import Loader from "./components/Loader/Loader";
+import Certifications from "./components/Certifications/Certifications";
+import TechStackModal from "./components/TechStackModal/TechStackModal";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
+  // Handle Initial Loading Screen
+  useEffect(() => {
+    const LOAD_TIME = 2000;
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, LOAD_TIME);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Theme Sync
+  useEffect(() => {
+    const savedColor = localStorage.getItem("portfolioThemeColor") || "#00abf0";
+    document.documentElement.style.setProperty("--main-color", savedColor);
+  }, []);
+
+  // Scroll Spy & Floating Scroll-To-Top Trigger
   useEffect(() => {
     const handleScroll = () => {
-      const sections = document.querySelectorAll("section");
       const scrollY = window.scrollY;
 
+      if (scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+
+      // Query both sections and div containers with IDs
+      const sections = document.querySelectorAll("div[id], section[id]");
       sections.forEach((section) => {
         const sectionTop = section.offsetTop - 120;
         const sectionHeight = section.offsetHeight;
@@ -39,55 +69,82 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Smooth Scroll Handler to Top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      
-      <Header
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
-      />
-     
+    <AnimatePresence mode="wait">
+      {loading ? (
+        <Loader key="loader" />
+      ) : (
+        <motion.div
+          key="main-content"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative"
+        >
+          <Header
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+          />
+          <Home />
+          <About />
+          <Services />
+          <Portfolio />
+          <Education />
+          <Skills />
+          <Certifications />
+          <Contact />
 
-      <Home />
-      <About />
-      <Services />
-      <Portfolio />
-      <Education />
-      <Skills />
-      <Testimonials />
-      <Contact />
+          {/* FOOTER */}
+          <footer className="w-full bg-[var(--second-bg-color)] border-t border-[#ededed]/10 py-6 px-6 sm:px-12 md:px-16 lg:px-20 flex justify-center">
+            <div className="w-full max-w-[125rem] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-[1.4rem] sm:text-[1.5rem] text-[#ededed]">
+              <p className="text-center sm:text-left text-[#ededed]/80">
+                © 2026  <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#ededed] to-[var(--main-color)]">
+              Abhijit Sahoo
+            </span>. All rights reserved.
+              </p>
 
-      {/* FOOTER */}
-      <footer className="flex justify-between items-center flex-wrap px-10 py-[1rem] bg-[#112e42]">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+                <VersionBadge />
+                <span className="text-[#ededed]/30">•</span>
+                <TechStackModal />
+              </div>
+            </div>
+          </footer>
 
-        {/* TEXT */}
-        <div className="text-[1.6rem] text-[#ededed]">
-          <p>© 2026 Abhijit Sahoo. All rights reserved.</p>
-        </div>
-
-        {/* TOP ICON */}
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <a
-            href="#home"
-            className="relative flex justify-center items-center w-[4rem] h-[4rem] border-[0.2rem] border-[#00abf0] rounded-[0.6rem] text-[#00abf0] overflow-hidden transition-all duration-500 hover:text-[#081b29]"
-          >
-            <span
-              className="absolute top-0 left-0 w-0 h-full -z-10 transition-all duration-500"
-              style={{ background: "#00abf0" }}
-            ></span>
-
-            <TiArrowUpOutline size={24} />
-          </a>
+          {/* FLOATING SCROLL-TO-TOP BUTTON */}
+          <AnimatePresence>
+            {showScrollTop && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed bottom-24 right-8 z-[99]"
+              >
+                <button
+                  onClick={scrollToTop}
+                  aria-label="Scroll to top"
+                  className="relative flex justify-center items-center w-[4.2rem] h-[4.2rem] border-[0.2rem] border-[var(--main-color)] rounded-[0.8rem] text-[var(--main-color)] bg-[#081b29]/80 backdrop-blur-md overflow-hidden transition-all duration-500 hover:text-[#081b29] shadow-[0_0_15px_rgba(0,171,240,0.3)] group cursor-pointer"
+                >
+                  <span className="absolute top-0 left-0 w-0 h-full -z-10 transition-all duration-500 group-hover:w-full bg-[var(--main-color)]" />
+                  <TiArrowUpOutline size={26} />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
-      </footer>
-    </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

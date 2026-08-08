@@ -1,45 +1,55 @@
 import React, { useState } from "react";
-import { FaUpRightFromSquare } from "react-icons/fa6";
-import { motion } from "framer-motion";
+import { FaUpRightFromSquare, FaGlobe, FaMobileScreenButton } from "react-icons/fa6";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Portfolio() {
   const [filter, setFilter] = useState("all");
 
   const projects = [
     {
+      id: "sparrow",
       title: "Sparrow Academic System",
-      desc: "College management system for students, faculty, and academic tracking.",
+      desc: "College management system for tracking student records, faculty management, and academic grading.",
       img: "/sparrow1.jpeg",
       link: "https://sparrowcampus.pro/login/",
       type: "web",
+      tech: ["React.js", "Redux", "Tailwind CSS", "Node.js"],
     },
     {
+      id: "papl",
       title: "PAPL System",
-      desc: "HRMS + Housing system for employee management and allocation.",
+      desc: "Comprehensive HRMS & Housing management application for corporate employee tracking and allocation.",
       img: "/2.jpg",
       link: null,
       type: "web",
+      tech: ["React.js", "Next.js", "Tailwind CSS", "REST APIs"],
     },
     {
+      id: "bloodbank",
       title: "Online Blood Bank",
-      desc: "Platform connecting donors, recipients, and blood banks.",
+      desc: "A life-saving platform connecting blood donors, recipients, and hospitals with real-time stock tracking.",
       img: "/bloodbank.jpeg",
       link: "https://bloodbank.in/",
       type: "web",
+      tech: ["React.js", "Material UI", "Node.js", "MongoDB"],
     },
     {
+      id: "vehicle-app",
       title: "Vehicle Management Mobile App",
-      desc: "Mobile application for managing vehicle records and service history.",
+      desc: "Cross-platform mobile application for managing vehicle service records, fuel logs, and maintenance alerts.",
       img: "https://images.unsplash.com/photo-1511527844068-006b95d162c2?auto=format&fit=crop&w=1200&q=80",
       link: null,
       type: "mobile",
+      tech: ["React Native", "Redux Toolkit", "AsyncStorage"],
     },
     {
+      id: "epuja",
       title: "E-Puja Application",
-      desc: "Digital puja booking system with scheduling and payments.",
+      desc: "Digital spiritual platform enabling users to book puja services, schedules, and online payments seamlessly.",
       img: "/jaganath.jpg",
       link: "https://epuja-demo.vercel.app",
       type: "mobile",
+      tech: ["React Native", "Tailwind CSS", "Razorpay"],
     },
   ];
 
@@ -49,106 +59,158 @@ export default function Portfolio() {
       : projects.filter((p) => p.type === filter);
 
   return (
-    <section
-      id="portfolio"
-      className="min-h-screen px-6 md:px-20 py-24 bg-[#081b29] text-[#ededed]"
+    <div
+      id="projects"
+      className="py-[6rem] px-6 sm:px-12 md:px-16 lg:px-20 bg-[#081b29] text-[#ededed] relative overflow-hidden w-full flex justify-center"
     >
-      {/* HEADING */}
-      <motion.h2
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center text-[clamp(3rem,6vw,5rem)] font-bold mb-10"
-      >
-        Latest <span className="text-[#00abf0]">Projects</span>
-      </motion.h2>
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] bg-[var(--main-color)] opacity-5 blur-[10rem] pointer-events-none rounded-full" />
 
-      {/* FILTER BUTTONS */}
-<div className="flex justify-center gap-3 sm:gap-5 mb-12 flex-nowrap overflow-x-auto px-2 no-scrollbar">
-  {["all", "web", "mobile"].map((type) => {
-    const isActive = filter === type;
+      <div className="w-full max-w-[125rem] mx-auto relative z-10 flex flex-col justify-center">
+        {/* HEADING with Scroll Repeat Motion */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-[3rem] w-full"
+        >
+          <h2 className="text-[3rem] sm:text-[4rem] lg:text-[4.8rem] font-bold">
+            Latest <span className="text-[var(--main-color)]">Projects</span>
+          </h2>
+          <p className="text-[1.3rem] sm:text-[1.5rem] lg:text-[1.6rem] text-[#ededed]/70 mt-2 max-w-[55rem] mx-auto">
+            Explore a collection of web platforms and mobile applications engineered for performance and user experience.
+          </p>
+        </motion.div>
 
-    return (
-      <motion.button
-        key={type}
-        onClick={() => setFilter(type)}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className={`
-          relative
-          min-w-[100px] sm:min-w-[120px] md:min-w-[140px]
-          h-[38px] sm:h-[44px] md:h-[50px]
-          px-4
-          text-[0.9rem] sm:text-[1.1rem] md:text-[1.4rem]
-          font-semibold
-          rounded-[0.6rem] sm:rounded-[0.8rem]
-          border-[0.15rem] sm:border-[0.2rem]
-          transition-all duration-300
-          whitespace-nowrap
-          ${
-            isActive
-              ? "bg-[#00abf0] text-[#081b29] border-[#00abf0]"
-              : "bg-transparent text-[#00abf0] border-[#00abf0] hover:bg-[#00abf0] hover:text-[#081b29]"
-          }
-        `}
-      >
-        {type.toUpperCase()}
-      </motion.button>
-    );
-  })}
-</div>
-      {/* GRID */}
-      <div className="grid md:grid-cols-3 gap-10">
-        {filtered.map((project, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ scale: 1.03 }}
-            className="relative h-[400px] rounded-2xl overflow-hidden border border-[#ededed]/20 shadow-lg group"
-          >
-            {/* IMAGE */}
-            <img
-              src={project.img}
-              alt={project.title}
-              className="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+        {/* FILTER TABS with Scroll Repeat Motion */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex justify-center items-center gap-3 sm:gap-4 mb-[4rem] flex-wrap w-full"
+        >
+          {[
+            { label: "All Projects", value: "all", icon: null },
+            { label: "Web Apps", value: "web", icon: FaGlobe },
+            { label: "Mobile Apps", value: "mobile", icon: FaMobileScreenButton },
+          ].map((tab) => {
+            const isActive = filter === tab.value;
+            const Icon = tab.icon;
 
-            {/* OVERLAY */}
-            <div
-              className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 translate-y-full group-hover:translate-y-0 transition-all duration-500"
-              style={{
-                background:
-                  "linear-gradient(rgba(0,0,0,0.2), rgba(0,171,240,0.9))",
-              }}
-            >
-              <h4 className="text-[2.2rem] font-semibold mb-3">
-                {project.title}
-              </h4>
+            return (
+              <button
+                key={tab.value}
+                onClick={() => setFilter(tab.value)}
+                className={`
+                  relative flex items-center gap-2 px-6 py-3
+                  text-[1.3rem] sm:text-[1.5rem] font-semibold
+                  rounded-xl transition-all duration-300 cursor-pointer
+                  ${
+                    isActive
+                      ? "bg-[var(--main-color)] text-[#081b29] shadow-[0_0_15px_rgba(0,171,240,0.4)]"
+                      : "bg-[#112e42]/80 text-[#ededed]/80 border border-[#ededed]/10 hover:border-[var(--main-color)] hover:text-[var(--main-color)]"
+                  }
+                `}
+              >
+                {Icon && <Icon className="text-[1.4rem]" />}
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </motion.div>
 
-              <p className="text-[1.4rem] mb-6 text-[#f1f1f1] line-clamp-4">
-                {project.desc}
-              </p>
+        {/* PROJECT GRID */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project, i) => (
+              <motion.div
+                layout
+                key={project.id}
+                initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                whileHover={{ y: -8 }}
+                className="group bg-[#112e42]/80 backdrop-blur-md rounded-[1.5rem] border border-[#ededed]/10 hover:border-[var(--main-color)]/60 overflow-hidden shadow-lg transition-all duration-500 flex flex-col justify-between w-full"
+              >
+                <div>
+                  {/* IMAGE CONTAINER WITH OVERLAY BUTTON */}
+                  <div className="relative h-[220px] overflow-hidden bg-[#081b29]">
+                    <img
+                      src={project.img}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#112e42] via-transparent to-transparent opacity-80" />
 
-              {project.link ? (
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-[5rem] h-[5rem] rounded-full bg-[#ededed] hover:scale-110 transition"
-                >
-                  <FaUpRightFromSquare className="text-[2rem] text-[#081b29]" />
-                </a>
-              ) : (
-                <div className="flex items-center justify-center w-[5rem] h-[5rem] rounded-full bg-[#ededed] opacity-60">
-                  <FaUpRightFromSquare className="text-[2rem] text-[#081b29]" />
+                    {/* Top Category Badge */}
+                    <span className="absolute top-4 left-4 px-3 py-1 text-[1.1rem] font-bold uppercase tracking-wider rounded-md bg-[#081b29]/80 backdrop-blur-md text-[var(--main-color)] border border-[var(--main-color)]/30">
+                      {project.type}
+                    </span>
+
+                    {/* Direct Link Hover Button */}
+                    {project.link && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute top-4 right-4 w-12 h-12 rounded-full bg-[var(--main-color)] text-[#081b29] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100 scale-75 shadow-lg hover:bg-white"
+                        title="Open Live Preview"
+                      >
+                        <FaUpRightFromSquare className="text-[1.6rem]" />
+                      </a>
+                    )}
+                  </div>
+
+                  {/* CONTENT AREA */}
+                  <div className="p-6">
+                    <h3 className="text-[2rem] font-bold mb-3 text-[#ededed] group-hover:text-[var(--main-color)] transition-colors duration-300">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-[1.3rem] text-[#ededed]/70 mb-6 leading-relaxed line-clamp-3">
+                      {project.desc}
+                    </p>
+
+                    {/* TECH STACK BADGES */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.tech.map((item, idx) => (
+                        <span
+                          key={idx}
+                          className="text-[1.1rem] px-3 py-1 rounded-full bg-[#081b29] text-[var(--main-color)] border border-[var(--main-color)]/20 font-medium"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
-          </motion.div>
-        ))}
+
+                {/* CARD FOOTER LINK */}
+                <div className="px-6 pb-6 pt-2 border-t border-[#ededed]/5 flex justify-between items-center mt-auto">
+                  {project.link ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-[1.3rem] font-semibold text-[var(--main-color)] hover:underline"
+                    >
+                      <span>View Live Demo</span>
+                      <FaUpRightFromSquare className="text-[1.2rem]" />
+                    </a>
+                  ) : (
+                    <span className="text-[1.2rem] font-medium text-[#ededed]/40 italic">
+                      Internal Client Project
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
-    </section>
+    </div>
   );
 }
