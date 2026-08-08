@@ -32,3 +32,7 @@ Clone the repository:
 
 ```bash
 git clone <your-repository-url>
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+
