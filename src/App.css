@@ -1,3 +1,4 @@
+/* Multiple Developer-Friendly Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Default Theme (Dark) */
@@ -13,24 +14,23 @@
 
   /* Typography Settings */
   --font-family: 'Poppins', sans-serif;
-  --font-scale: 100%;
   --font-line-height: 1.6;
 }
 
-/* Explicit Light Mode: Deep Cool Gray Background + Distinct Elevated Card */
+/* Explicit Light Mode */
 [data-theme="light"] {
-  --bg-color: #e5e9f0;              /* Outer frame/gap deep cool slate-gray */
-  --second-bg-color: #f1f5f9;       /* Secondary neutral tone */
+  --bg-color: #e5e9f0;
+  --second-bg-color: #f1f5f9;
   --drawer-bg: rgba(255, 255, 255, 0.98);
-  --text-color: #0f172a;            /* Crisp slate dark text */
+  --text-color: #0f172a;
   --text-muted: rgba(51, 65, 85, 0.75);
   --border-color: rgba(15, 23, 42, 0.12);
-  --card-bg: #ffffff;               /* Pure white elevated card on top of gray gap */
+  --card-bg: #ffffff;
 }
 
 /* Explicit Dark Mode */
 [data-theme="dark"] {
-  --bg-color: #081b29;              /* Deep navy dark */
+  --bg-color: #081b29;
   --second-bg-color: #0e2436;
   --drawer-bg: rgba(11, 36, 54, 0.95);
   --text-color: #ededed;
@@ -39,30 +39,11 @@
   --card-bg: rgba(14, 36, 54, 0.7);
 }
 
-/* Base: Laptop/Mobile (1rem = 10px * dynamic font-scale) */
+/* Base: Stable 1rem = 10px without dynamic blowout on wider screens */
 html {
-  font-size: calc(62.5% * var(--font-scale, 100%) / 100%);
+  font-size: 62.5%;
   scroll-behavior: smooth;
   scroll-padding-top: 8rem;
-}
-
-/* Responsive Root Sizes with dynamic font scale */
-@media (min-width: 1440px) {
-  html {
-    font-size: calc(70% * var(--font-scale, 100%) / 100%);
-  }
-}
-
-@media (min-width: 1800px) {
-  html {
-    font-size: calc(80% * var(--font-scale, 100%) / 100%);
-  }
-}
-
-@media (min-width: 2200px) {
-  html {
-    font-size: calc(90% * var(--font-scale, 100%) / 100%);
-  }
 }
 
 body {
