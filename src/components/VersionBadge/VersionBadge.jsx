@@ -10,7 +10,7 @@ const VersionBadge = () => {
       href={releaseUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 px-3 py-1 text-[1.1rem] sm:text-[1.2rem] font-medium text-[var(--main-color)] bg-[#112e42] border border-[var(--main-color)]/30 rounded-full hover:bg-[var(--main-color)] hover:text-[#081b29] transition-all duration-300 group shadow-sm"
+      className="inline-flex items-center gap-1.5 px-3 py-1 text-[1.1rem] sm:text-[1.2rem] font-medium text-[var(--main-color)] bg-[var(--second-bg-color)]/70 border border-[var(--main-color)]/30 rounded-full hover:bg-[var(--main-color)] hover:text-[var(--bg-color)] hover:border-[var(--main-color)] transition-all duration-300 group shadow-xs cursor-pointer"
       title="View GitHub Release v1.0.0"
     >
       <FiGitBranch className="text-[1.3rem] shrink-0" />

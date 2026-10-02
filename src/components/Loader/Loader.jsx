@@ -148,7 +148,7 @@ const Loader = ({ initial = "A", onComplete }) => {
           transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
           className="mt-14 text-lg font-extrabold tracking-[0.25em] text-[var(--main-color,#00abf0)] drop-shadow-[0_0_6px_var(--main-color,#00abf0)] uppercase"
         >
-          {progress < 100 ? `Loading... ${progress}%` : "Welcome!"}
+          {progress < 100 ? `Loading... ${progress}%` : "Welcome To Abhijit Portfolio!"}
         </motion.p>
       </div>
     </motion.div>
