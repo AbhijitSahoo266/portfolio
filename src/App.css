@@ -39,7 +39,7 @@
   --card-bg: rgba(14, 36, 54, 0.7);
 }
 
-/* Base: Stable 1rem = 10px without dynamic blowout on wider screens */
+/* Base: Simple standard root font (1rem = 10px) - No invalid calc() divisions */
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
