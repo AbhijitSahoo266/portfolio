@@ -112,7 +112,6 @@ const SettingsDrawer = () => {
     setMenuLayout(layout);
     localStorage.setItem("portfolioMenuLayout", layout);
 
-    // Horizontal layout re collapsed sidebar ra darkar nahi, teņu reset
     if (layout === "horizontal") {
       setIsMenuCollapsed(false);
       localStorage.setItem("portfolioSidebarPinned", "true");
@@ -137,7 +136,6 @@ const SettingsDrawer = () => {
   const handleToggleCollapsed = (e) => {
     const checked = e.target.checked;
     setIsMenuCollapsed(checked);
-    // checked = true maane unpinned/collapsed
     localStorage.setItem("portfolioSidebarPinned", (!checked).toString());
     window.dispatchEvent(new Event("portfolioSidebarChanged"));
   };
@@ -147,7 +145,6 @@ const SettingsDrawer = () => {
     setIsMenuHidden(checked);
     localStorage.setItem("portfolioSidebarHidden", checked.toString());
 
-    // Jodi menu hide heigala, collapsed state ku auto reset (false) kari diya
     if (checked) {
       setIsMenuCollapsed(false);
       localStorage.setItem("portfolioSidebarPinned", "true");
@@ -217,28 +214,29 @@ const SettingsDrawer = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
-              className="relative w-[30rem] sm:w-[35rem] h-full bg-[var(--drawer-bg)] backdrop-blur-xl border-l border-[var(--main-color)]/30 p-6 flex flex-col justify-between shadow-2xl text-[var(--text-color)] overflow-y-auto transition-colors duration-300"
+              className="relative w-[30rem] sm:w-[35rem] h-full bg-[var(--drawer-bg)] backdrop-blur-xl border-l border-[var(--main-color)]/30 flex flex-col justify-between shadow-2xl text-[var(--text-color)] overflow-hidden transition-colors duration-300"
             >
-              <div className="space-y-5">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-3.5 border-b border-[var(--border-color)]">
-                  <div>
-                    <h3 className="text-[1.65rem] font-bold text-[var(--text-color)] tracking-wide">
-                      Theme Customizer
-                    </h3>
-                    <p className="text-[1.1rem] text-[var(--text-muted)]">
-                      Customize & Preview in Real Time
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setIsOpen(false)}
-                    className="p-1.5 rounded-lg bg-[var(--second-bg-color)]/60 hover:bg-[var(--second-bg-color)] text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors cursor-pointer"
-                  >
-                    <IoClose size={20} />
-                  </button>
+              {/* FIXED CONSTANT HEADER */}
+              <div className="sticky top-0 z-10 bg-[var(--drawer-bg)] px-6 pt-6 pb-3.5 border-b border-[var(--border-color)] flex items-center justify-between shrink-0">
+                <div>
+                  <h3 className="text-[1.65rem] font-bold text-[var(--text-color)] tracking-wide">
+                    Theme Customizer
+                  </h3>
+                  <p className="text-[1.1rem] text-[var(--text-muted)]">
+                    Customize & Preview in Real Time
+                  </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="p-1.5 rounded-lg bg-[var(--second-bg-color)]/60 hover:bg-[var(--second-bg-color)] text-[var(--text-muted)] hover:text-[var(--text-color)] transition-colors cursor-pointer"
+                >
+                  <IoClose size={20} />
+                </button>
+              </div>
 
+              {/* SCROLLABLE MIDDLE CONTENT */}
+              <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5 space-y-5">
                 {/* Section: Mode */}
                 <div>
                   <div className="flex items-center gap-2 text-[1.25rem] font-semibold text-[var(--main-color)] mb-2">
@@ -408,14 +406,13 @@ const SettingsDrawer = () => {
                   </div>
                 </div>
 
-                {/* Section: Menu Controls (Available for both Vertical & Horizontal) */}
+                {/* Section: Menu Controls */}
                 <div className="hidden md:block">
                   <div className="flex items-center gap-2 text-[1.25rem] font-semibold text-[var(--main-color)] mb-2.5">
                     <FiSidebar />
                     <span>{menuLayout === "vertical" ? "Sidebar Controls" : "Menu Controls"}</span>
                   </div>
                   <div className="flex flex-col gap-2 rounded-2xl bg-[var(--second-bg-color)]/40 p-2.5 border border-[var(--border-color)]">
-                    {/* Menu Hidden Switch (Horizontal au Vertical duhitire show heba) */}
                     <div className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-[var(--main-color)]/5 transition-colors">
                       <div className="flex items-center gap-2.5">
                         <FiEyeOff className="text-[1.4rem] text-[var(--text-muted)]" />
@@ -430,7 +427,6 @@ const SettingsDrawer = () => {
                       />
                     </div>
 
-                    {/* Menu Collapsed Switch (Kewala Vertical Layout & Menu Not Hidden bele dekha jiba) */}
                     <AnimatePresence>
                       {!isMenuHidden && menuLayout === "vertical" && (
                         <motion.div
@@ -480,8 +476,8 @@ const SettingsDrawer = () => {
                 </div>
               </div>
 
-              {/* Drawer Footer */}
-              <div className="pt-4 mt-6 border-t border-[var(--border-color)] flex flex-col gap-3">
+              {/* FIXED CONSTANT FOOTER */}
+              <div className="sticky bottom-0 z-10 bg-[var(--drawer-bg)] p-6 border-t border-[var(--border-color)] flex flex-col gap-3 shrink-0">
                 <div className="flex items-center justify-between">
                   <button
                     type="button"
